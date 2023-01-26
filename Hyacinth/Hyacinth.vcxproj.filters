@@ -27,7 +27,10 @@
     <ClInclude Include="include\Hyacinth\ObjParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Hyacinth\Entities\Triangle.h">
+    <ClInclude Include="include\Hyacinth\Face.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Hyacinth\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -36,6 +39,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\rendering.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\Hyacinth\Entity.h">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

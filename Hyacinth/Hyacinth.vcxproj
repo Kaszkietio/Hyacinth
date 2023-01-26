@@ -135,13 +135,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\Hyacinth\Entities\Triangle.h" />
     <ClInclude Include="include\Hyacinth\ObjParser.h" />
     <ClInclude Include="include\Hyacinth\Renderer.h" />
     <ClInclude Include="include\Hyacinth\rendering.h" />
+    <ClInclude Include="include\Hyacinth\Texture.h" />
     <ClInclude Include="include\Hyacinth\utils.h" />
+    <ClInclude Include="include\Hyacinth\Face.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="include\Hyacinth\Entity.h" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\rendering.cpp" />
   </ItemGroup>
