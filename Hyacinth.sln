@@ -10,6 +10,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Example", "Example\Example.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hyacinth", "Hyacinth\Hyacinth.vcxproj", "{9CB70CFE-9964-486A-9D22-117A0C1F7121}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "Tests\Tests.vcxproj", "{1AAB36FE-1A6A-4903-9A03-2CA4FE107D48}"
+	ProjectSection(ProjectDependencies) = postProject
+		{59FC754E-0DED-4B12-8FE1-C1D333549332} = {59FC754E-0DED-4B12-8FE1-C1D333549332}
+		{9CB70CFE-9964-486A-9D22-117A0C1F7121} = {9CB70CFE-9964-486A-9D22-117A0C1F7121}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -34,6 +40,14 @@ Global
 		{9CB70CFE-9964-486A-9D22-117A0C1F7121}.Release|x64.Build.0 = Release|x64
 		{9CB70CFE-9964-486A-9D22-117A0C1F7121}.Release|x86.ActiveCfg = Release|Win32
 		{9CB70CFE-9964-486A-9D22-117A0C1F7121}.Release|x86.Build.0 = Release|Win32
+		{1AAB36FE-1A6A-4903-9A03-2CA4FE107D48}.Debug|x64.ActiveCfg = Debug|x64
+		{1AAB36FE-1A6A-4903-9A03-2CA4FE107D48}.Debug|x64.Build.0 = Debug|x64
+		{1AAB36FE-1A6A-4903-9A03-2CA4FE107D48}.Debug|x86.ActiveCfg = Debug|Win32
+		{1AAB36FE-1A6A-4903-9A03-2CA4FE107D48}.Debug|x86.Build.0 = Debug|Win32
+		{1AAB36FE-1A6A-4903-9A03-2CA4FE107D48}.Release|x64.ActiveCfg = Release|x64
+		{1AAB36FE-1A6A-4903-9A03-2CA4FE107D48}.Release|x64.Build.0 = Release|x64
+		{1AAB36FE-1A6A-4903-9A03-2CA4FE107D48}.Release|x86.ActiveCfg = Release|Win32
+		{1AAB36FE-1A6A-4903-9A03-2CA4FE107D48}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

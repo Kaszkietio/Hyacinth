@@ -1,11 +1,23 @@
-#include "Hyacinth/Renderer.h"
-#include "Hyacinth/utils.h"
-#include "Hyacinth/rendering.h"
+#include <Hyacinth/Renderer.h>
+#include <Hyacinth/utils.h>
+#include <Hyacinth/rendering.h>
 
 #include <glm/vec3.hpp>
+#include <Hyacinth/ObjParser.h>
+
+#include <algorithm>
 
 Hyacinth::Renderer::Renderer()
 {
+	static const std::string path = "..\\Resources\\";
+	Entity triangle = ObjParser::Parse(path + "triangle.obj", "triangle1");
+	m_scene.AddEntity(
+		triangle,
+		0,
+		glm::vec3(2.0f, 2.0f, -2.0f),
+		glm::vec3(2.0f),
+		glm::vec3(0.0f, 0.0f, 0.0f)
+	);
 }
 
 Hyacinth::Renderer::~Renderer()
@@ -14,95 +26,114 @@ Hyacinth::Renderer::~Renderer()
 
 void Hyacinth::Renderer::OnUpdate(uint32_t data[], int32_t width, int32_t height)
 {
-	static float z = -0.1f;
-	z -= 0.1f;
+	auto backColor = to_rgba(m_scene.BackgroundColor);
 
+	// Clear background
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
 		{
-			data[y * width + x] = to_rgba(glm::vec3(0.2f, 0.3f, 0.3f));
+			data[y * width + x] = backColor;
 		}
 	}
-	//glm::vec3 a(
-	//	((0.0f) + 1.0f) * 0.5f * width,
-	//	((-0.5f) + 1.0f) * 0.5f * height,
-	//	0.0f);
-	//glm::vec3 b(
-	//	((0.5f) + 1.0f) * 0.5f * width,
-	//	((0.2f) + 1.0f) * 0.5f * height,
-	//	0.0f);
-	//glm::vec3 c(
-	//	((-0.1f) + 1.0f) * 0.5f * width,
-	//	((0.35f) + 1.0f) * 0.5f * height,
-	//	0.0f);
-	
-	//glm::vec3 a(
-	//	((0.0f) + 1.0f) * 0.5f * width,
-	//	((-0.5f) + 1.0f) * 0.5f * height,
-	//	//((0.0f) + 1.0f) * 0.5f * height,
-	//	0.0f);
-	//glm::vec3 b(
-	//	((-0.5f) + 1.0f) * 0.5f * width,
-	//	((0.5f) + 1.0f) * 0.5f * height,
-	//	0.0f);
-	//glm::vec3 c(
-	//	((0.5f) + 1.0f) * 0.5f * width,
-	//	((0.5f) + 1.0f) * 0.5f * height,
-	//	0.0f);
 
-	glm::vec4 c(
-		(0.0f),
-		(0.5f),
-		0.0f,
-		1.0f
-	);
-	glm::vec4 a(
-		(-0.5f),
-		(-0.5f),
-		0.0f,
-		1.0f
-	);
-	glm::vec4 b(
-		(0.5f),
-		(-0.5f),
-		0.0f,
-		1.0f
-	);
+	// tmp array
+	std::array<glm::vec4, 3> vertice{};
+	std::array<glm::vec4, 3> normals{};
 
-	//glm::mat4 trans = glm::mat4(1.0f);
-	//float rads = glm::radians(rotate);
-	//trans = glm::rotate(trans, rads, glm::vec3(0.0f, 0.0f, 1.0f));
-	//trans = glm::translate(trans, glm::vec3(0.0f, 0.0f, 0.0f));
+	// camera
+	static glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	static glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+	static glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-	//a = trans * a;
-	//b = trans * b;
-	//c = trans * c;
+	// View
+	static glm::mat4 View = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
-	glm::mat4 model = glm::mat4(1.0f);
-	//model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	// Projection
+	constexpr float fov = 90.0f;
+	const float aspectRatio = (float)width / height;
+	constexpr float nearZ = 0.1f;
+	constexpr float farZ = 100.0f;
+	glm::mat4 Proj = glm::perspective(glm::radians(90.0f), aspectRatio, nearZ, farZ);
+	glm::mat4 Res = Proj * View;
 
-	glm::mat4 view = glm::mat4(1.0f);
-	view = glm::translate(view, glm::vec3(0.0f, 0.0f, 0.0f));
+	// Textures
+	auto& Textures = m_scene.GetTextures();
 
-	glm::mat4 projection = glm::mat4(1.0f);
-	projection = glm::perspective(glm::radians(90.0f), (float)width / height, 0.1f, 100.0f);
+#ifdef FUN
+	// Draw entities
+	for (auto& entity : m_scene.GetEntities())
+	{
+		if (!entity.IsValidState()) continue;
 
-	glm::mat4 tmp2 = projection * view;
+		glm::mat4 Model = entity.GetModelMatrix();
+		glm::mat4 Matrix = Res * Model;
+		glm::mat4 NormalMatrix = glm::inverse(glm::transpose(Model));
 
-	glm::mat4 tmp = projection * view * model;
+		// Draw triangle
+		for (auto triangle : entity.GetMesh())
+		{
+			std::for_each(triangle.vertice.begin(), triangle.vertice.end(),
+			[width, height, &Matrix](glm::vec4& a)
+			{
+				a = Matrix * a;
+			});
 
-	a = projection * view * model * a;
-	b = projection * view * model * b;
-	c = projection * view * model * c;
+			//auto dupa = ClipTriangle(triangle);
 
-	a.x = (a.x/a.w + 1.0f) * 0.5f * width;
-	a.y = (a.y/a.w + 1.0f) * 0.5f * height;
-	b.x = (b.x/b.w + 1.0f) * 0.5f * width;
-	b.y = (b.y/b.w + 1.0f) * 0.5f * height;
-	c.x = (c.x/c.w + 1.0f) * 0.5f * width;
-	c.y = (c.y/c.w + 1.0f) * 0.5f * height;
+			for (auto& t : ClipTriangle(triangle))
+			{
+				std::for_each(t.vertice.begin(), t.vertice.end(),
+				[width, height, &Matrix](glm::vec4& a)
+				{
+					a.x = (a.x / a.w + 1.0f) * 0.5f * width;
+					a.y = (a.y / a.w + 1.0f) * 0.5f * height;
+					a.z = (a.z / a.w + 1.0f) * 0.5f;
+					a.w = 1.0f;
+				});
 
-	DrawTriangle(data, width, height, 
-		a, b, c);
+				DrawTriangle(data, width, height, t, Textures[entity.GetTextureId()]);
+			}
+		}
+		glm::vec3 newRotation = entity.GetRotation();
+		newRotation.y += 1.0f;
+		if (newRotation.y >= 360.0f) newRotation.y -= 360.0f;
+		entity.SetRotation(std::move(newRotation));
+	}
+#else
+	// Draw entities
+	for (auto& entity : m_scene.GetEntities())
+	{
+		if (!entity.IsValidState()) continue;
+
+		auto& v = entity.GetVertice();
+		auto& n = entity.GetNormals();
+		glm::mat4 Model = entity.GetModelMatrix();
+		glm::mat4 Matrix = Res * Model;
+		glm::mat4 NormalMatrix = glm::inverse(glm::transpose(Model));
+
+		// Draw triangle
+		for (auto& triangle : entity.GetMesh())
+		{
+			for (int i = 0; i < 3; i++)
+			{
+				vertice[i] = Matrix * v[triangle.vertexId[i]];
+				normals[i] = NormalMatrix * n[triangle.normalId[i]];
+			}
+
+			std::for_each(vertice.begin(), vertice.end(), 
+				[width, height](glm::vec4& a) 
+				{
+					a.x = (a.x / a.w + 1.0f) * 0.5f * width; 
+					a.y = (a.y / a.w + 1.0f) * 0.5f * height; 
+				});
+
+			DrawTriangle(data, width, height, vertice);
+		}
+		glm::vec3 newRotation = entity.GetRotation();
+		newRotation.y += 1.0f;
+		if (newRotation.y >= 360.0f) newRotation.y -= 360.0f;
+		entity.SetRotation(std::move(newRotation));
+	}
+#endif
 }

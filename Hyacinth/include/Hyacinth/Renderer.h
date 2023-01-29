@@ -1,10 +1,14 @@
 #pragma once
 #include <cstdint>
+#include <Hyacinth/Scene.h>
 
 namespace Hyacinth
 {
 	class Renderer
 	{
+	private:
+		Scene m_scene{};
+
 	public:
 		Renderer();
 		~Renderer();

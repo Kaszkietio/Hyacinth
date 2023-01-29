@@ -7,9 +7,9 @@ namespace Hyacinth
 	{
 		std::string Name{};
 
-		uint32_t width{};
-		uint32_t height{};
-		uint32_t channelCount{};
+		int32_t width{};
+		int32_t height{};
+		int32_t channelCount{};
 		uint8_t* data{ nullptr };
 	};
 }

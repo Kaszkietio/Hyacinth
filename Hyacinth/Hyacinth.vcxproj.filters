@@ -27,10 +27,19 @@
     <ClInclude Include="include\Hyacinth\ObjParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Hyacinth\Face.h">
+    <ClInclude Include="include\Hyacinth\Triangle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Hyacinth\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Hyacinth\Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Hyacinth\Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Hyacinth\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -42,6 +51,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="include\Hyacinth\Entity.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
