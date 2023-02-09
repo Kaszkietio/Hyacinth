@@ -48,19 +48,6 @@ namespace Hyacinth
 		constexpr std::vector<Triangle>& GetMesh() noexcept { return m_triangles; }
 		void SetMesh(std::vector<Triangle>&& newFaces) { m_triangles = std::move(newFaces); }
 
-#ifndef FUN
-		constexpr const std::vector<glm::vec4>& GetVertice() const noexcept { return m_vertice; }
-		constexpr std::vector<glm::vec4>& GetVertice() noexcept { return m_vertice; }
-		void SetVertice(std::vector<glm::vec4>&& newFaces) { m_vertice = std::move(newFaces); }
-
-		constexpr const std::vector<glm::vec4>& GetNormals() const noexcept { return m_normals; }
-		constexpr std::vector<glm::vec4>& GetNormals() noexcept { return m_normals; }
-		void SetNormals(std::vector<glm::vec4>&& newNormals) { m_normals = std::move(newNormals); }
-
-		constexpr const std::vector<glm::vec2>& GetTextureCoords() const noexcept { return m_textureCoords; }
-		constexpr std::vector<glm::vec2>& GetTextureCoords() noexcept { return m_textureCoords; }
-		void SetTextureCoords(std::vector<glm::vec2>&& newTextureCoords) { m_textureCoords = std::move(newTextureCoords); }
-#endif
 		constexpr uint32_t GetTextureId() const noexcept{ return m_textureId; }
 		void SetTextureId(uint32_t newTextureId) { m_textureId = newTextureId; }
 

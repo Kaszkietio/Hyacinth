@@ -1,21 +1,14 @@
 #pragma once
+
 #include <iostream>
 #include <string_view>
 #include <sstream>
 #include <fstream>
-#include "Entity.h"
+#include <Lilia/Entity.h>
 
-namespace Hyacinth
+namespace Lilia::Parser
 {
-	class ObjParser
-	{
-	private:
-
-	public:
-		static Entity Parse(std::string_view fileName, std::string entityName);
-	};
-
-	Entity ObjParser::Parse(std::string_view fileName, std::string entityName)
+	static Entity Parse(std::string_view fileName, std::string entityName)
 	{
 		Entity result{};
 		std::ifstream file;
@@ -27,12 +20,12 @@ namespace Hyacinth
 		std::vector<Triangle> triangles;
 
 		// Set name
-		result.SetName(entityName);
+		result.Name = entityName;
 
 		file.open(fileName.data());
 		if (!file.is_open())
 		{
-			result.SetState(Entity::State::Invalid);
+			result.State = Entity::State::Invalid;
 			return result;
 		}
 
@@ -96,22 +89,22 @@ namespace Hyacinth
 					if (end == std::string::npos)
 					{
 						index = std::stoi(tmp) - 1;
-						triangle.vertice[i] = vertice[index];
+						triangle.vertice[i].vertex = vertice[index];
 					}
 					else
 					{
 						index = std::stoi(tmp.substr(start, end - start + 1)) - 1;
-						triangle.vertice[i] = vertice[index];
+						triangle.vertice[i].vertex = vertice[index];
 
 						// texture coord index
 						start = end + 1;
 						end = tmp.find('/', start);
 						if (end == start)
-							triangle.texCoords[i] = glm::vec2(INFINITY);
+							triangle.vertice[i].texCoord = glm::vec2(INFINITY);
 						else if (end != std::string::npos)
 						{
 							index = std::stoi(tmp.substr(start, end - start + 1)) - 1;
-							triangle.texCoords[i] = texCoords[index];
+							triangle.vertice[i].texCoord = texCoords[index];
 						}
 
 						// normal index
@@ -120,7 +113,7 @@ namespace Hyacinth
 						if (end != std::string::npos)
 						{
 							index = std::stoi(tmp.substr(start, end - start + 1)) - 1;
-							triangle.normals[i] = normals[index];
+							triangle.vertice[i].normal = normals[index];
 						}
 					}
 					i++;
@@ -130,14 +123,8 @@ namespace Hyacinth
 			}
 		}
 
-#ifndef FUN
-		result.SetNormals(std::move(normals));
-		result.SetVertice(std::move(vertice));
-		result.SetTextureCoords(std::move(texCoords));
-#endif
-
-		result.SetMesh(std::move(triangles));
-		result.SetState(Entity::State::Valid);
+		result.Triangles = std::move(triangles);
+		result.State = Entity::State::Valid;
 
 		file.close();
 		return result;

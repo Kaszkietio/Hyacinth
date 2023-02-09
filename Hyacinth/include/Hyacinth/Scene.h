@@ -7,6 +7,7 @@
 
 #include <Hyacinth/Texture.h>
 #include <Hyacinth/Entity.h>
+#include <Hyacinth/Light.h>
 
 
 namespace Hyacinth
@@ -15,6 +16,7 @@ namespace Hyacinth
 	{
 	public:
 		glm::vec4 BackgroundColor{ 0.0f, 0.0f, 0.0f, 1.0f };
+		std::vector<Light> Lights{};
 	private:
 		std::vector<Entity> m_entities{};
 		std::vector<Texture> m_textures{};
@@ -23,6 +25,7 @@ namespace Hyacinth
 
 	public:
 		Scene();
+		~Scene();
 
 		constexpr const std::string& GetName() const noexcept { return m_name; }
 		constexpr std::string& GetName() noexcept { return m_name; }

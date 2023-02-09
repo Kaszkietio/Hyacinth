@@ -9,25 +9,19 @@
 #include <Hyacinth/Triangle.h>
 #include <Hyacinth/Vertex.h>
 #include <Hyacinth/Texture.h>
+#include <Hyacinth/Light.h>
 
 namespace Hyacinth
 {
-#ifndef FUN
 	void DrawTriangle(
 		uint32_t data[],
 		int32_t width,
 		int32_t height,
-		std::array<glm::vec4, 3> triangle
+		Triangle& triangleNDC,
+		const Texture& texture,
+		std::vector<float>& zBuffer,
+		uint32_t& backColor
 		);
-#else
-	void DrawTriangle(
-		uint32_t data[],
-		int32_t width,
-		int32_t height,
-		const Triangle& triangle,
-		const Texture& texture
-		);
-#endif
 	void DrawLineBresenham(
 		uint32_t data[],
 		int32_t width, 
@@ -41,20 +35,26 @@ namespace Hyacinth
 		uint32_t data[],
 		int32_t width, 
 		int32_t height,
-		const glm::vec4& a,
-		const glm::vec4& b,
-		const glm::vec4& c,
-		const Texture& texture
+		const Triangle& t,
+		//const glm::vec4& a,
+		//const glm::vec4& b,
+		//const glm::vec4& c,
+		const Texture& texture,
+		std::vector<float>& zBuffer,
+		uint32_t& backColor
 	);
 
 	void DrawTriangleFlatBottom(
 		uint32_t data[],
 		int32_t width, 
 		int32_t height,
-		const glm::vec4& a,
-		const glm::vec4& b,
-		const glm::vec4& c,
-		const Texture& texture
+		const Triangle& t,
+		//const glm::vec4& a,
+		//const glm::vec4& b,
+		//const glm::vec4& c,
+		const Texture& texture,
+		std::vector<float>& zBuffer,
+		uint32_t& backColor
 	);
 
 	std::vector<Triangle> ClipTriangle(
@@ -68,9 +68,49 @@ namespace Hyacinth
 		uint32_t data[],
 		int32_t width,
 		int32_t height,
-		const glm::vec4& a,
-		const glm::vec4& b,
-		const glm::vec4& c,
+		const Triangle& t,
+		//const glm::vec4& a,
+		//const glm::vec4& b,
+		//const glm::vec4& c,
 		uint32_t color
 	);
+
+	inline uint32_t GetColor(
+		std::vector<float>& zBuffer,
+		int index,
+		float u,
+		float v,
+		float z1,
+		float z2,
+		float q,
+		const Texture& texture,
+		uint32_t backgroundColor
+	);
+
+	glm::vec4 ConstShading(
+		const glm::vec4& hitPoint,
+		const glm::vec4& normal,
+		const glm::vec4& viewerPos,
+		const std::vector<Light>& Lights
+	);
+
+	template<class T>
+	inline T lerp_w(T atr1, T atr2, float w1, float w2, float q)
+	{
+		return ((atr1 * (1 - q) / w1) + (atr2 * q / w2)) / ((1 - q) / w1 + q / w2);
+	}
+
+	template<class T>
+	inline T lerp(T atr1, T atr2, float q)
+	{
+		return atr1 * (1 - q) + atr2 * q;
+	}
+
+	template<class T>
+	inline T barimetric_w(T atr1, T atr2, T atr3, float b1, float b2, float b3, float w1, float w2, float w3)
+	{
+		return ((atr1 * b1 / w1) + (atr2 * b2 / w2) + (atr3 * b3 / w3)) / ((b1 / w1 + b2 / w2 + b3 / w3));
+	}
+
+
 }

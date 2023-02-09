@@ -24,7 +24,7 @@ Application::Application(
 		m_window.Height = height;
 	}
 
-    //m_renderer.OnResize(m_window.Width, m_window.Height);
+    m_renderer.OnResize(m_window.Width, m_window.Height);
 
     // Check if setup secceeded
     int res = Setup();
@@ -213,7 +213,7 @@ void Application::CalculateFrame()
 void Application::ResizeBuffers()
 {
     m_data = std::make_unique<uint8_t[]>(static_cast<size_t>(4) * m_window.Width * m_window.Height);
-    //m_renderer.OnResize(m_window.Width, m_window.Height);
+    m_renderer.OnResize(m_window.Width, m_window.Height);
 
     glTexImage2D( GL_TEXTURE_2D,
 		0,
@@ -308,6 +308,6 @@ void Application::UpdateCamera(float ts)
     if ((int32_t)state) // state == Input::KeyState::Pressed
         rot -= ts;
 
-    //m_renderer.MoveCamera(dz, dy, dx, rot);
+    m_renderer.MoveCamera(dz, dy, dx, rot);
     //m_renderer.MoveCamera(dx, dy, dz);
 }

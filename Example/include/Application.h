@@ -1,7 +1,7 @@
 #pragma once
 #include "glExtension/glInclude.h"
 
-#include "Hyacinth/Renderer.h"
+#include "Lilia/Renderer.h"
 
 #include "input.h"
 
@@ -28,7 +28,7 @@ public:
 	static Input::KeyState Keys[Input::KEYS_COUNT];
 private:
 	//LumenOpus::Renderer m_renderer{};
-	Hyacinth::Renderer m_renderer{};
+	Lilia::Renderer m_renderer{};
 
 	std::unique_ptr<uint8_t[]> m_data;
 

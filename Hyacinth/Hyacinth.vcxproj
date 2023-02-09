@@ -136,6 +136,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\Hyacinth\Camera.h" />
+    <ClInclude Include="include\Hyacinth\Light.h" />
     <ClInclude Include="include\Hyacinth\ObjParser.h" />
     <ClInclude Include="include\Hyacinth\Renderer.h" />
     <ClInclude Include="include\Hyacinth\rendering.h" />
@@ -144,12 +145,26 @@
     <ClInclude Include="include\Hyacinth\utils.h" />
     <ClInclude Include="include\Hyacinth\Triangle.h" />
     <ClInclude Include="include\Hyacinth\Vertex.h" />
+    <ClInclude Include="include\Lilia\Camera.h" />
+    <ClInclude Include="include\Lilia\Clipper.h" />
+    <ClInclude Include="include\Lilia\Entity.h" />
+    <ClInclude Include="include\Lilia\Framebuffer.h" />
+    <ClInclude Include="include\Lilia\Light.h" />
+    <ClInclude Include="include\Lilia\Parser.h" />
+    <ClInclude Include="include\Lilia\Renderer.h" />
+    <ClInclude Include="include\Lilia\Scene.h" />
+    <ClInclude Include="include\Lilia\Texture.h" />
+    <ClInclude Include="include\Lilia\Triangles\ScreenTriangle.h" />
+    <ClInclude Include="include\Lilia\Triangles\Triangle.h" />
+    <ClInclude Include="include\Lilia\Triangles\Vertex.h" />
+    <ClInclude Include="include\stbi_include.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\Hyacinth\Entity.h" />
-    <ClCompile Include="src\Renderer.cpp" />
-    <ClCompile Include="src\rendering.cpp" />
-    <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="include\Lilia\Entity.cpp" />
+    <ClCompile Include="src\Hyacinth\rendering.cpp" />
+    <ClCompile Include="src\Hyacinth\Scene.cpp" />
+    <ClCompile Include="src\Lilia\Renderer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
