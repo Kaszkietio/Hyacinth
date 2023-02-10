@@ -151,8 +151,13 @@
     <ClInclude Include="include\Lilia\Framebuffer.h" />
     <ClInclude Include="include\Lilia\Light.h" />
     <ClInclude Include="include\Lilia\Parser.h" />
+    <ClInclude Include="include\Lilia\Payloads.h" />
     <ClInclude Include="include\Lilia\Renderer.h" />
     <ClInclude Include="include\Lilia\Scene.h" />
+    <ClInclude Include="include\Lilia\Shaders\FragmentShader.h" />
+    <ClInclude Include="include\Lilia\Shaders\GeometryShader.h" />
+    <ClInclude Include="include\Lilia\Shaders\VertexShader.h" />
+    <ClInclude Include="include\Lilia\Shading\ShadingModel.h" />
     <ClInclude Include="include\Lilia\Texture.h" />
     <ClInclude Include="include\Lilia\Triangles\ScreenTriangle.h" />
     <ClInclude Include="include\Lilia\Triangles\Triangle.h" />
@@ -161,7 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\Hyacinth\Entity.h" />
-    <ClCompile Include="include\Lilia\Entity.cpp" />
+    <ClCompile Include="src\Lilia\Entity.cpp" />
     <ClCompile Include="src\Hyacinth\rendering.cpp" />
     <ClCompile Include="src\Hyacinth\Scene.cpp" />
     <ClCompile Include="src\Lilia\Renderer.cpp" />

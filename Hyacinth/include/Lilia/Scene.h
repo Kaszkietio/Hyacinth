@@ -10,7 +10,7 @@ namespace Lilia
 	class Scene
 	{
 	public:
-		glm::vec3 BackgroundColor{ 0.0f, 0.0f, 0.0f };
+		uint32_t BackgroundColor = 0xff000000;
 		std::vector<Entity> Entities;
 		std::vector<Light> Lights;
 		std::vector<Texture> Textures{};

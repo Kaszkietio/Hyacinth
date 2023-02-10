@@ -6,7 +6,9 @@
 #include <Lilia/Parser.h>
 #include <Lilia/Framebuffer.h>
 #include <Lilia/Clipper.h>
-
+#include <Lilia/Shaders/VertexShader.h>
+#include <Lilia/Shaders/GeometryShader.h>
+#include <Lilia/Shaders/FragmentShader.h>
 
 namespace Lilia
 {
@@ -15,25 +17,40 @@ namespace Lilia
 	{
 	public:
 		
+		// Common data
 		std::vector<float> zBuffer{};
 		Camera Camera{};
 		Scene Scene{};
 		Framebuffer fb{ .zBuffer = zBuffer };
-		SutherlandHodgmanClipper clipper{};
+		std::vector<Light> Lights{};
+
+		// Clippers
+		SutherlandHodgmanClipper SHClipper{};
+		Clipper& clipper = SHClipper;
+
+		// Shading models
+		ConstantShadingModel constModel{};
+		PhongShadingModel phongModel{};
+		ShadingModel& shadingModel = phongModel;
 
 	public:
 		Renderer();
 
 		void OnUpdate(uint32_t data[], int32_t width, int32_t height);
 
-		void DrawEntity(Entity& entity, const glm::mat4& Proj, const glm::mat4& View);
+		void DrawEntity(Entity& entity, const glm::mat4& ProjView);
 
 		void DrawTriangle(Entity& e, Triangle& world, Triangle& clip);
 
 		inline void UpdateFramebuffer(uint32_t data[], int32_t width, int32_t height)
 		{
 			fb.data = data; fb.width = width; fb.height = height;
-			for (auto& z : zBuffer) z = INFINITY;
+			int32_t size = fb.width * fb.height;
+			for (int i = 0; i < size; i++)
+			{
+				fb.data[i] = Scene.BackgroundColor;
+				fb.zBuffer[i] = FLT_MAX;
+			}
 		}
 
 		void OnResize(int32_t width, int32_t height)
@@ -49,7 +66,8 @@ namespace Lilia
 		static inline void Clear(const Framebuffer& fb, const glm::vec3& color)
 		{
 			uint32_t c = Texture::ToRGBA(color);
-			for (int i = 0; i < fb.width * fb.height; i++)
+			int32_t size = fb.width * fb.height;
+			for (int i = 0; i < size; i++)
 				fb.data[i] = c;
 		}
 	};

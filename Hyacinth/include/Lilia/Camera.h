@@ -17,6 +17,9 @@ namespace Lilia
 		static constexpr float nearZ = 0.1f;
 		static constexpr float farZ = 100.0f;
 
+		glm::mat4 ProjMatrix{};
+		glm::mat4 ViewMatrix{};
+
 		void OnUpdate(float forward, float up, float right, float yaw)
 		{
 			constexpr float Speed = 10.0f;

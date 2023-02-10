@@ -13,26 +13,21 @@ namespace Lilia
 	struct ScreenVertex
 	{
 		glm::vec3 vertex{};
-		glm::vec3 normal{};
-		glm::vec2 texCoord{};
+		float w{};
 
 		static inline ScreenVertex lerp(const ScreenVertex& a, const ScreenVertex& b, float q)
 		{
 			ScreenVertex result;
 			result.vertex = glm::lerp(a.vertex, b.vertex, glm::vec3(q));
-			result.normal = glm::lerp(a.normal, b.normal, glm::vec3(q));
-			result.texCoord = glm::lerp(a.texCoord, b.texCoord, glm::vec2(q));  
-
+			result.w = glm::lerp(a.w, b.w, q);
 			return result;
 		}
-
-
 	};
 
 	struct ScreenTriangle
 	{
 		std::array<ScreenVertex, 3> v{};
-		Texture& texture;
+		//Texture& texture;
 
 		constexpr ScreenVertex& operator[](int index)
 		{
@@ -51,8 +46,6 @@ namespace Lilia
 						: v[i].vertex.x < v[j].vertex.x))
 					{
 						std::swap(v[i].vertex, v[j].vertex);
-						std::swap(v[i].normal, v[j].normal);
-						std::swap(v[i].texCoord, v[j].texCoord);
 					}
 				}
 			}
@@ -102,8 +95,9 @@ namespace Lilia
 				uv = glm::lerp(p.uv1, p.uv2, glm::vec2(quv));
 
 				fb.zBuffer[p.y * fb.width + x] = z;
-				uint32_t newColor = texture.GetPixel(uv.x, uv.y);
-				fb.data[p.y * fb.width + x] = newColor;
+				//uint32_t newColor = texture.GetPixel(uv.x, uv.y);
+				//fb.data[p.y * fb.width + x] = newColor;
+				fb.data[p.y * fb.width + x] = 0xff0000ff;
 			}
 #define DrawOutline 0
 #if DrawOutline
@@ -132,8 +126,8 @@ namespace Lilia
 			float dz1 = (c.vertex.z - a.vertex.z) / dy;
 			float dz2 = (c.vertex.z - b.vertex.z) / dy;
 
-			glm::vec2 uv1 = a.texCoord, uv2 = b.texCoord;
-			glm::vec2 uv3 = c.texCoord;
+			//glm::vec2 uv1 = a.texCoord, uv2 = b.texCoord;
+			//glm::vec2 uv3 = c.texCoord;
 
 			float quv = 0.0f;
 			float dquv = 1 / dy;
@@ -152,7 +146,8 @@ namespace Lilia
 					y,
 					x1, x2,
 					z1, z2,
-					glm::lerp(uv1, uv3, glm::vec2(quv)), glm::lerp(uv2, uv3, glm::vec2(quv))
+					//glm::lerp(uv1, uv3, glm::vec2(quv)), glm::lerp(uv2, uv3, glm::vec2(quv))
+					glm::vec2(0.0f), glm::vec2(0.0f)
 				);
 				DrawLine(fb, payload);
 			}
@@ -174,8 +169,8 @@ namespace Lilia
 			float dz1 = (b.vertex.z - a.vertex.z) / dy;
 			float dz2 = (c.vertex.z - a.vertex.z) / dy;
 
-			glm::vec2 uv1 = a.texCoord, uv2 = b.texCoord;
-			glm::vec2 uv3 = c.texCoord;
+			//glm::vec2 uv1 = a.texCoord, uv2 = b.texCoord;
+			//glm::vec2 uv3 = c.texCoord;
 
 			float quv = 0.0f;
 			float dquv = 1 / dy;
@@ -195,7 +190,8 @@ namespace Lilia
 					y,
 					x1, x2,
 					z1, z2,
-					glm::lerp(uv1, uv2, glm::vec2(quv)), glm::lerp(uv1, uv3, glm::vec2(quv))
+					//glm::lerp(uv1, uv2, glm::vec2(quv)), glm::lerp(uv1, uv3, glm::vec2(quv))
+					glm::vec2(0.0f), glm::vec2(0.0f)
 				);
 				DrawLine(fb, payload);
 			}

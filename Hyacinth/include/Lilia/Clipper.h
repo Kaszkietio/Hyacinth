@@ -17,11 +17,11 @@ namespace Lilia
 	public:
 		std::vector<Triangle> Clip(Triangle& t) override
 		{
-			std::vector<Vertex> vertice(t.vertice.size());
+			std::vector<glm::vec4> vertice(t.vertice.size());
 
 			for (int i = 0; i < t.vertice.size(); i++)
 			{
-				vertice[i] = t[i];
+				vertice[i] = t[i].vertex;
 			}
 
 			// Apply Sutherland-Hodgman
@@ -36,18 +36,16 @@ namespace Lilia
 				for (int j = 0; j < tmp.vertice.size(); j++)
 				{
 					int index = j != 0 ? i + j : 0;
-					//tmp.vertice[j] = vertice[index].vertex;
-					//tmp.normals[j] = vertice[index].normal;
-					//tmp.texCoords[j] = vertice[index].texCoord;
-					tmp[j] = vertice[index];
+					tmp[j].vertex = vertice[index];
 				}
 				result[i] = tmp;
+				result[i].state = Triangle::State::Clipping;
 			}
 
 			return result;
 		}
 	private:
-		void SutherlandHodgman(std::vector<Vertex>& vertice) 
+		void SutherlandHodgman(std::vector<glm::vec4>& vertice) 
 		{
 			constexpr auto dist = [](const glm::vec4& v, int i) -> float
 			{
@@ -56,7 +54,7 @@ namespace Lilia
 				return res;
 			};
 
-			std::vector<Vertex> tmp;
+			std::vector<glm::vec4> tmp;
 
 			// Create clipped polygon
 			for (int border = 0; border < 6; border++)
@@ -67,8 +65,10 @@ namespace Lilia
 				{
 					auto& A = vertice[index % vertice.size()];
 					auto& B = vertice[(index + 1) % vertice.size()];
-					float distA = dist(A.vertex, border);
-					float distB = dist(B.vertex, border);
+					//float distA = dist(A.vertex, border);
+					//float distB = dist(B.vertex, border);
+					float distA = dist(A, border);
+					float distB = dist(B, border);
 
 					float signA = glm::sign(distA), signB = glm::sign(distB);
 
@@ -85,15 +85,17 @@ namespace Lilia
 						{
 							float distC = distA / (distA - distB);
 							//glm::vec4 vC = ((A.vertex * (1 - distC) / A.vertex.w) + (B.vertex * distC / B.vertex.w)) / ;
-							glm::vec4 vC = A.vertex * (1 - distC) + B.vertex * distC;
-							glm::vec4 nC = glm::normalize(A.normal * (1 - distC) + B.normal * distC);
-							glm::vec2 tC = A.texCoord * (1 - distC) + B.texCoord * distC;
+							//glm::vec4 vC = A.vertex * (1 - distC) + B.vertex * distC;
+							//glm::vec4 nC = glm::normalize(A.normal * (1 - distC) + B.normal * distC);
+							//glm::vec2 tC = A.texCoord * (1 - distC) + B.texCoord * distC;
 
 							//glm::vec4 vC = lerp_w(A.vertex, B.vertex, A.vertex.w, B.vertex.w, distC);
 							//glm::vec4 nC = lerp_w(A.normal, B.normal, A.vertex.w, B.vertex.w, distC);
 							//glm::vec2 tC = lerp_w(A.texCoord, B.texCoord, A.vertex.w, B.vertex.w, distC);
+							glm::vec4 C = A * (1 - distC) + B * distC;
 
-							tmp.push_back(Vertex{ .vertex = vC, .normal = nC, .texCoord = tC });
+							//tmp.push_back(Vertex{ .vertex = vC, .normal = nC, .texCoord = tC });
+							tmp.push_back(C);
 							tmp.push_back(B);
 						}
 					}
@@ -104,15 +106,17 @@ namespace Lilia
 						if (signB < 0)
 						{
 							float distC = distA / (distA - distB);
-							glm::vec4 vC = A.vertex * (1 - distC) + B.vertex * distC;
-							glm::vec4 nC = glm::normalize(A.normal * (1 - distC) + B.normal * distC);
-							glm::vec2 tC = A.texCoord * (1 - distC) + B.texCoord * distC;
+							//glm::vec4 vC = A.vertex * (1 - distC) + B.vertex * distC;
+							//glm::vec4 nC = glm::normalize(A.normal * (1 - distC) + B.normal * distC);
+							//glm::vec2 tC = A.texCoord * (1 - distC) + B.texCoord * distC;
 
 							//glm::vec4 vC = lerp_w(A.vertex, B.vertex, A.vertex.w, B.vertex.w, distC);
 							//glm::vec4 nC = lerp_w(A.normal, B.normal, A.vertex.w, B.vertex.w, distC);
 							//glm::vec2 tC = lerp_w(A.texCoord, B.texCoord, A.vertex.w, B.vertex.w, distC);
 
-							tmp.push_back(Vertex{ .vertex = vC, .normal = nC, .texCoord = tC });
+							//tmp.push_back(Vertex{ .vertex = vC, .normal = nC, .texCoord = tC });
+							glm::vec4 C = A * (1 - distC) + B * distC;
+							tmp.push_back(C);
 						}
 						// End inside
 						else
