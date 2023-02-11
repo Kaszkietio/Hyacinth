@@ -45,45 +45,45 @@ namespace Lilia
 		static const std::string path = Scene::path + Scene::objSuffix;
 
 		// Add Entities
-		//Entity triangle = Parser::Parse(path + "triangle.obj", "triangle1");
-		//auto& t = Entities.emplace_back(triangle);
-		//t.TextureId = 0;
-		//t.UpdatePosition(glm::vec3(0.0f, 0.0f, -1.0f));
-		//t.UpdateScale(glm::vec3(2.0f));
-		//t.UpdateRotation(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
-		//t.UpdateModelMatrix();
+		Entity triangle = Parser::Parse(path + "triangle.obj", "triangle1");
+		auto& t = Entities.emplace_back(triangle);
+		t.TextureId = 0;
+		t.UpdatePosition(glm::vec3(0.0f, 0.0f, -1.0f));
+		t.UpdateScale(glm::vec3(2.0f));
+		t.UpdateRotation(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
+		t.UpdateModelMatrix();
 
-		//Entity triangle2 = Parser::Parse(path + "triangle.obj", "triangle2");
-		//auto& t2 = Entities.emplace_back(triangle2);
-		//t2.TextureId = 2;
-		//t2.UpdatePosition(glm::vec3(-2.0f, 0.0f, -2.0f));
-		//t2.UpdateScale(glm::vec3(2.0f));
-		//t2.UpdateRotation(glm::vec3(1.0f, 0.0f, 0.0f), 315.0f);
-		//t2.UpdateModelMatrix();
+		Entity triangle2 = Parser::Parse(path + "triangle.obj", "triangle2");
+		auto& t2 = Entities.emplace_back(triangle2);
+		t2.TextureId = 2;
+		t2.UpdatePosition(glm::vec3(-2.0f, 0.0f, -2.0f));
+		t2.UpdateScale(glm::vec3(2.0f));
+		t2.UpdateRotation(glm::vec3(1.0f, 0.0f, 0.0f), 315.0f);
+		t2.UpdateModelMatrix();
 
-		//Entity cube = Parser::Parse(path + "cube.obj", "cube");
-		//auto& t4 = Entities.emplace_back(cube);
-		//t4.TextureId = 3;
-		//t4.UpdatePosition(glm::vec3(5.0f, 0.0f, -2.0f));
-		//t4.UpdateScale(glm::vec3(1.0f));
-		//t4.UpdateRotation(glm::vec3(1.0f, 0.0f, 0.0f), 0.0f);
-		//t4.UpdateModelMatrix();
+		Entity cube = Parser::Parse(path + "cube.obj", "cube");
+		auto& t4 = Entities.emplace_back(cube);
+		t4.TextureId = 3;
+		t4.UpdatePosition(glm::vec3(5.0f, 0.0f, -2.0f));
+		t4.UpdateScale(glm::vec3(1.0f));
+		t4.UpdateRotation(glm::vec3(1.0f, 0.0f, 0.0f), 0.0f);
+		t4.UpdateModelMatrix();
 
-		//Entity sphere = Parser::Parse(path + "sphere.obj", "sphere");
-		//auto& t5 = Entities.emplace_back(sphere);
-		//t5.TextureId = 3;
-		//t5.UpdatePosition(glm::vec3(4.0f, 2.0f, 8.0f));
-		//t5.UpdateScale(glm::vec3(1.0f));
-		//t5.UpdateRotation(glm::vec3(1.0f, 0.0f, 0.0f), 0.0f);
-		//t5.UpdateModelMatrix();
+		Entity sphere = Parser::Parse(path + "sphere.obj", "sphere");
+		auto& t5 = Entities.emplace_back(sphere);
+		t5.TextureId = 3;
+		t5.UpdatePosition(glm::vec3(4.0f, 2.0f, 8.0f));
+		t5.UpdateScale(glm::vec3(1.0f));
+		t5.UpdateRotation(glm::vec3(1.0f, 0.0f, 0.0f), 0.0f);
+		t5.UpdateModelMatrix();
 
-		//Entity smoothSphere = Parser::Parse(path + "smoothSphere.obj", "smoothSphere");
-		//auto& t8 = Entities.emplace_back(smoothSphere);
-		//t8.TextureId = 3;
-		//t8.UpdatePosition(glm::vec3(-3.0f, 2.0f, 8.0f));
-		//t8.UpdateScale(glm::vec3(1.0f));
-		//t8.UpdateRotation(glm::vec3(1.0f, 0.0f, 0.0f), 0.0f);
-		//t8.UpdateModelMatrix();
+		Entity smoothSphere = Parser::Parse(path + "smoothSphere.obj", "smoothSphere");
+		auto& t8 = Entities.emplace_back(smoothSphere);
+		t8.TextureId = 3;
+		t8.UpdatePosition(glm::vec3(-3.0f, 2.0f, 8.0f));
+		t8.UpdateScale(glm::vec3(1.0f));
+		t8.UpdateRotation(glm::vec3(1.0f, 0.0f, 0.0f), 0.0f);
+		t8.UpdateModelMatrix();
 
 		Entity plane = Parser::Parse(path + "plane.obj", "plane");
 		auto& t6 = Entities.emplace_back(plane);

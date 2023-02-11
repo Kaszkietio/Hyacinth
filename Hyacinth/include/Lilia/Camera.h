@@ -52,14 +52,19 @@ namespace Lilia
 			AspectRatio = aspectRatio; ProjMatrix = glm::perspective(FovRad, AspectRatio, NearZ, FarZ);
 		}
 
-		inline constexpr glm::mat4 GetProjectionMatrix()
+		inline constexpr const glm::mat4& GetProjectionMatrix() const 
 		{
 			return ProjMatrix;
 		}
 
-		inline constexpr glm::mat4 GetViewMatrix()
+		inline constexpr const glm::mat4& GetViewMatrix() const 
 		{
 			return ViewMatrix;
+		}
+
+		constexpr const glm::vec3& GetPosition() const
+		{
+			return Position;
 		}
 	};
 }

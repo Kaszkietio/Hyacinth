@@ -23,7 +23,6 @@ namespace Lilia
 		) = 0;
 
 		virtual glm::vec3 GetColor(
-			const Triangle& triangle,
 			Vertex& v,
 			const std::vector<Light>& lights,
 			Texture& texture,
@@ -102,7 +101,6 @@ namespace Lilia
 		}
 
 		glm::vec3 GetColor(
-			const Triangle & triangle, 
 			Vertex & v, 
 			const std::vector<Light>&lights, 
 			Texture & texture,
@@ -138,7 +136,6 @@ namespace Lilia
 		}
 
 		glm::vec3 GetColor(
-			const Triangle & triangle, 
 			Vertex & v, 
 			const std::vector<Light>&lights, 
 			Texture & texture,
@@ -197,7 +194,6 @@ namespace Lilia
 		}
 
 		glm::vec3 GetColor(
-			const Triangle & triangle, 
 			Vertex & v, 
 			const std::vector<Light>&lights, 
 			Texture & texture,
@@ -208,6 +204,7 @@ namespace Lilia
 			glm::vec3 fogDist = glm::vec3(v.vertex) - CameraPos;
 			float fogFactor = getFogFactor(glm::dot(fogDist, fogDist));
 			return glm::mix(objColor, FogColor, fogFactor);
+			return objColor;
 		}
 
 	};

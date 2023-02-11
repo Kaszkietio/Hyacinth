@@ -12,9 +12,9 @@ namespace Lilia
 		int32_t height{};
 		int32_t channelCount{};
 		uint8_t* data{ nullptr };
-		int32_t h{}, w{};
+		int32_t h, w;
 
-		inline uint32_t GetPixel(float u, float v)
+		inline uint32_t GetPixel(float u, float v) 
 		{
 			h = (int32_t)((height - 1) * (1 - v)) * width;
 			w = int32_t(width * u);
@@ -38,6 +38,5 @@ namespace Lilia
 				| uint8_t(c.g * 255.0f) << 8
 				| uint8_t(c.r * 255.0f);
 		}
-
 	};
 }

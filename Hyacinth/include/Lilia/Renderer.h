@@ -20,12 +20,13 @@ namespace Lilia
 		
 		// Common data
 		std::vector<float> zBuffer{};
-		Camera Camera{};
 		TestScene Scene{};
 		Framebuffer fb{ .zBuffer = zBuffer };
 		std::vector<Light> Lights{};
 
 		// Shaders
+		VertexShader vertexShader{};
+		GeometryShader geometryShader{};
 		FragmentShader fragmentShader{};
 
 		// Clippers
@@ -65,7 +66,7 @@ namespace Lilia
 
 		inline void MoveCamera(float forward, float up, float right, float yaw)
 		{
-			Camera.OnUpdate(forward, up, right, yaw);
+			Scene.GetCamera().OnUpdate(forward, up, right, yaw);
 		}
 
 		inline void UpdateShader(int32_t isConstant, int32_t isGouraud, int32_t isPhong)

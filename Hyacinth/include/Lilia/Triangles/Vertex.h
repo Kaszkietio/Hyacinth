@@ -19,6 +19,18 @@ namespace Lilia
 			return result;
 		}
 
+		static inline Vertex lerpW(const Vertex& a, const Vertex& b, float q, float w1, float w2)
+		{
+			Vertex result;
+			float q1 = q / w1;
+			float q2 = (1.0f - q) / w2;
+			float denom = q1 + q2;
+			result.vertex = (a.vertex * q1 + b.vertex * q2) / denom;
+			result.normal = glm::normalize((a.normal * q1 + b.normal * q2) / denom);
+			result.texCoord = (a.texCoord * q1 + b.texCoord * q2) / denom;
+			return result;
+		}
+
 		static inline Vertex bar(const Vertex& a, const Vertex& b, const Vertex& c, const glm::vec3& q)
 		{
 			Vertex result;

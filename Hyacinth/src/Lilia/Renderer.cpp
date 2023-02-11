@@ -6,10 +6,11 @@ namespace Lilia
 	{
 		if ((width & height) == 0) return;
 		UpdateFramebuffer(data, width, height);
-		Camera.OnProjectionUpdate(float(width) / height);
+		Camera& activeCamera = Scene.GetCamera();
+		activeCamera.OnProjectionUpdate(float(width) / height);
 
-		glm::mat4 Proj = Camera.GetProjectionMatrix();
-		glm::mat4 View = Camera.GetViewMatrix();
+		glm::mat4 Proj = activeCamera.GetProjectionMatrix();
+		glm::mat4 View = activeCamera.GetViewMatrix();
 		glm::mat4 ProjView = Proj * View;
 
 		for (auto& entity : Scene.Entities)
@@ -19,75 +20,129 @@ namespace Lilia
 
 	void Renderer::DrawEntity(Entity& entity, const glm::mat4& ProjView)
 	{
-		VertexData::Payload vertexPayload{};
-		GeometryData::Payload geoPayload{};
+		//VertexData::Payload vertexPayload{};
+		//GeometryData::Payload geoPayload{};
+		Triangle tmp;
+		const Camera& activeCamera = Scene.GetCamera();
+		Texture& texture = Scene.Textures[entity.TextureId];
 		const glm::mat4& Model = entity.GetModelMatrix();
-		Texture& tex = Scene.Textures[entity.TextureId];
 
-		for (auto& t : entity.Triangles)
+		// Vertex shader
+		VertexShader::Input vertexInput(
+			entity.Triangles,
+			Model, activeCamera.GetViewMatrix(), activeCamera.GetProjectionMatrix(),
+			ProjView
+		);
+		vertexShader.Process(vertexInput);
+		VertexShader::Payload vertexPayload = vertexShader.GetPayload();
+
+		// GeometryShader
+		GeometryShader::Input geoInput(
+			vertexPayload.world, vertexPayload.clipping,
+			clipper
+		);
+		geometryShader.Process(geoInput);
+		GeometryShader::Payload geoPayload = geometryShader.GetPayload();
+
+		// Convert to NDC and screen space
+		std::vector<std::vector<ScreenTriangle>> screenTriangles(geoPayload.clipping.size());
+		for (int i = 0; i < geoPayload.clipping.size(); ++i)
 		{
-#if 1
-			// Vertex shader
-			VertexData::Input vertexInput(t, Model, ProjView);
-			vertexPayload = VertexShader::Process(vertexInput);
-
-			// Geometry shader
-			GeometryData::Input geoInput(vertexPayload.World, vertexPayload.Clipping, clipper);
-			geoPayload = GeometryShader::Process(geoInput);
-
-#if 0
-			for (auto& clipped : geoPayload.ClippedTriangles)
+			screenTriangles[i].resize(geoPayload.clipping[i].size());
+			for (int j = 0; j < geoPayload.clipping[i].size(); j++)
 			{
-				DrawTriangle(entity, vertexPayload.World, clipped);
+				tmp = geoPayload.clipping[i][j].ToNDC();
+				screenTriangles[i][j] = tmp.ToScreen(fb.width, fb.height);
 			}
-#else
-
-			// Convert to NDC and to Screen Space
-			std::vector<ScreenTriangle> screenVertice(geoPayload.ClippedTriangles.size());
-			int i = 0;
-			for (auto& clipped : geoPayload.ClippedTriangles)
-			{
-				screenVertice[i++] = clipped.ToNDC().ToScreen(fb.width, fb.height);
-			}
-			ScreenTriangle wholeScreenTriangle = vertexPayload.Clipping.ToNDC().ToScreen(fb.width, fb.height);
-
-			// Fragment shader
-			FragmentData::Input fragInput(
-				fb, 
-				geoPayload.World, 
-				wholeScreenTriangle, 
-				screenVertice, 
-				tex, 
-				*shadingModel, 
-				Lights,
-				Camera.Position);
-			fragmentShader.Process(fragInput);
-#endif
-#else
-			Triangle world = t.ApplyModelMatrix(Model);
-
-			Triangle clip = world.ApplyProjViewMatrix(ProjView);
-			//clip.ApplyProjViewMatrix(ProjView);
-
-			std::vector<Triangle> clippedArray = clipper.Clip(clip);
-
-			for (auto& clipped : clippedArray)
-			{
-				DrawTriangle(entity, world, clipped);
-			}
-#endif
-
-			// Currently updating here
-			// but gonna change
-			glm::vec3 Rotation = entity.GetRotation();
-			float angle = entity.GetRotationAngle();
-			if (entity.Name == "cube") angle += 0.1f;
-			//else
-			//	Rotation.y += 1.0f;
-			if (angle >= 360.0f) angle -= 360.0f;
-
-			entity.UpdateRotation(Rotation, angle);
 		}
+
+		// Fragment shader
+		FragmentShader::Input fragInput{
+			.fb = fb,
+			.wholeWorld = vertexPayload.world,
+			.world = geoPayload.world,
+			.screenTriangles = screenTriangles,
+			.texture = texture,
+			.shadingModel = *shadingModel,
+			.lights = Scene.Lights,
+			.camera = activeCamera,
+			.cameraPosition = activeCamera.GetPosition()
+		};
+		fragmentShader.Process(fragInput);
+
+
+//		//for (auto& t : entity.Triangles)
+//		//{
+//		for(int i = 0; i < geoPayload.clipping.size(); i++)
+//		{
+//			for (int k = 0; k < geoPayload.clipping[i].size(); k++)
+//			{
+//#if 1
+//				// Vertex shader
+//				//VertexData::Input vertexInput(t, Model, ProjView);
+//				//vertexPayload = VertexShader::Process(vertexInput);
+//
+//				// Geometry shader
+//				//GeometryData::Input geoInput(vertexPayload.World[i], vertexPayload.Clipping[i], clipper);
+//				//geoPayload = GeometryShader::Process(geoInput);
+//
+//#if 0
+//				for (auto& clipped : geoPayload.ClippedTriangles)
+//				{
+//					DrawTriangle(entity, vertexPayload.World, clipped);
+//				}
+//#else
+//
+//			// Convert to NDC and to Screen Space
+//				std::vector<ScreenTriangle> screenVertice(geoPayload.clipping[i].size());
+//				int j = 0;
+//				Triangle tmp;
+//				for (auto& clipped : geoPayload.clipping[i])
+//				{
+//					tmp = clipped.ToNDC();
+//					screenVertice[j++] = tmp.ToScreen(fb.width, fb.height);
+//				}
+//				tmp = vertexPayload.clipping[i].ToNDC();
+//				ScreenTriangle wholeScreenTriangle = tmp.ToScreen(fb.width, fb.height);
+//
+//				// Fragment shader
+//				FragmentData::Input fragInput(
+//					fb,
+//					vertexPayload.world[i],
+//					wholeScreenTriangle,
+//					screenVertice,
+//					texture,
+//					*shadingModel,
+//					Lights,
+//					activeCamera.GetPosition());
+//				fragmentShader.Process(fragInput);
+//#endif
+//#else
+//				Triangle world = t.ApplyModelMatrix(Model);
+//
+//				Triangle clip = world.ApplyProjViewMatrix(ProjView);
+//				//clip.ApplyProjViewMatrix(ProjView);
+//
+//				std::vector<Triangle> clippedArray = clipper.Clip(clip);
+//
+//				for (auto& clipped : clippedArray)
+//				{
+//					DrawTriangle(entity, world, clipped);
+//				}
+//#endif
+//			}
+//
+//			// Currently updating here
+//			// but gonna change
+//			glm::vec3 Rotation = entity.GetRotation();
+//			float angle = entity.GetRotationAngle();
+//			if (entity.Name == "cube") angle += 0.1f;
+//			//else
+//			//	Rotation.y += 1.0f;
+//			if (angle >= 360.0f) angle -= 360.0f;
+//
+//			entity.UpdateRotation(Rotation, angle);
+//		}
 	}
 
 	//void Renderer::DrawTriangle(Entity& e, Triangle& world, Triangle& clip)
