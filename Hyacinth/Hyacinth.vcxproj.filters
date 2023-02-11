@@ -51,7 +51,7 @@
     <ClInclude Include="include\Lilia\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Lilia\Scene.h">
+    <ClInclude Include="include\Lilia\Scenes\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Lilia\Entity.h">
@@ -102,6 +102,9 @@
     <ClInclude Include="include\Lilia\Triangles\DrawingVertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Lilia\Scenes\TestScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Hyacinth\rendering.cpp">
@@ -116,10 +119,13 @@
     <ClCompile Include="src\Lilia\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Lilia\Entity.cpp">
+    <ClCompile Include="src\Lilia\FragmentShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Lilia\FragmentShader.cpp">
+    <ClCompile Include="src\Lilia\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Lilia\TestScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

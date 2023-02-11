@@ -58,7 +58,6 @@ namespace Lilia
 			//M = glm::rotate(M, glm::radians(Rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
 			//M = glm::rotate(M, glm::radians(Rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 			//M = glm::translate(M, Position);
-
 			ScaleMatrix = glm::scale(Scale);
 			glm::quat MyQuat = glm::angleAxis(RotationAngle, Rotation);
 			RotationMatrix = glm::toMat4(MyQuat);
@@ -106,7 +105,5 @@ namespace Lilia
 		{
 			return glm::degrees(RotationAngle);
 		}
-
-		void Draw(Framebuffer& fb, const glm::mat4& Proj, const glm::mat4& View);
 	};
 }

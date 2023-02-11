@@ -16,12 +16,6 @@ namespace Lilia
 
 		inline uint32_t GetPixel(float u, float v)
 		{
-			//h = (int32_t)((height - 1) * (1 - v)) * width * channelCount;
-			//w = int32_t(width * u) * channelCount;
-			//return 0xff000000 
-			//	| data[h + w + 2] << 16
-			//	| data[h + w + 1] << 8
-			//	| data[h + w];
 			h = (int32_t)((height - 1) * (1 - v)) * width;
 			w = int32_t(width * u);
 			return ((uint32_t*)data)[h + w];

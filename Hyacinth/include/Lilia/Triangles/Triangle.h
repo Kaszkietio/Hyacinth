@@ -39,9 +39,6 @@ namespace Lilia
 			for (int i = 0; i < vertice.size(); i++)
 			{
 				result.vertice[i].vertex = Model * vertice[i].vertex;
-				//result.vertice[i].normal = vertice[i].normal;
-				//result.vertice[i].normal.w = 0.0f;
-				//result.vertice[i].normal = InverseTransposeModel * result.vertice[i].normal;
 				result.vertice[i].normal = InverseTransposeModel * vertice[i].normal;
 				result.vertice[i].normal.w = 0.0f;
 				result.vertice[i].normal = glm::normalize(result.vertice[i].normal);

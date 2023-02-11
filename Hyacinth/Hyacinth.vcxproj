@@ -153,7 +153,8 @@
     <ClInclude Include="include\Lilia\Parser.h" />
     <ClInclude Include="include\Lilia\Payloads.h" />
     <ClInclude Include="include\Lilia\Renderer.h" />
-    <ClInclude Include="include\Lilia\Scene.h" />
+    <ClInclude Include="include\Lilia\Scenes\Scene.h" />
+    <ClInclude Include="include\Lilia\Scenes\TestScene.h" />
     <ClInclude Include="include\Lilia\Shaders\FragmentShader.h" />
     <ClInclude Include="include\Lilia\Shaders\GeometryShader.h" />
     <ClInclude Include="include\Lilia\Shaders\VertexShader.h" />
@@ -167,11 +168,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\Hyacinth\Entity.h" />
-    <ClCompile Include="src\Lilia\Entity.cpp" />
     <ClCompile Include="src\Hyacinth\rendering.cpp" />
     <ClCompile Include="src\Hyacinth\Scene.cpp" />
     <ClCompile Include="src\Lilia\FragmentShader.cpp" />
     <ClCompile Include="src\Lilia\Renderer.cpp" />
+    <ClCompile Include="src\Lilia\Scene.cpp" />
+    <ClCompile Include="src\Lilia\TestScene.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

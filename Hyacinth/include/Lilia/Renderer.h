@@ -2,7 +2,8 @@
 #include <cstdint>
 #include <vector>
 #include <Lilia/Camera.h>
-#include <Lilia/Scene.h>
+#include <Lilia/Scenes/Scene.h>
+#include <Lilia/Scenes/TestScene.h>
 #include <Lilia/Parser.h>
 #include <Lilia/Framebuffer.h>
 #include <Lilia/Clipper.h>
@@ -20,7 +21,7 @@ namespace Lilia
 		// Common data
 		std::vector<float> zBuffer{};
 		Camera Camera{};
-		Scene Scene{};
+		TestScene Scene{};
 		Framebuffer fb{ .zBuffer = zBuffer };
 		std::vector<Light> Lights{};
 

@@ -9,6 +9,10 @@ namespace Lilia
 {
 	class Scene
 	{
+	protected:
+		static const std::string path;
+		static const std::string textureSuffix;
+		static const std::string objSuffix;
 	public:
 		uint32_t BackgroundColor = 0xff000000;
 		std::vector<Entity> Entities;

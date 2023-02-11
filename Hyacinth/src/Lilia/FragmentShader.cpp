@@ -3,6 +3,22 @@
 
 namespace Lilia
 {
+	static void SortByY(ScreenTriangle& st, Triangle& t)
+	{
+		for (int i = 0; i < st.v.size(); i++)
+		{
+			for (int j = i + 1; j < st.v.size(); j++)
+			{
+				if (!(st.v[i].vertex.y != st.v[j].vertex.y
+					? st.v[i].vertex.y < st.v[j].vertex.y
+					: st.v[i].vertex.x < st.v[j].vertex.x))
+				{
+					std::swap(st[i], st[j]);
+					std::swap(t[i], t[j]);
+				}
+			}
+		}
+	}
 	inline void FragmentShader::DrawLine(const FragmentData::Input& in)
 	{
 		int index;
@@ -29,16 +45,8 @@ namespace Lilia
 		input.Model.Update(wholeWorld, input.Lights, input.Tex, input.CameraPos);
 		for (auto& screen : input.ScreenTriangles)
 		{
-			//DrawingInput drawingInput{
-			//	.fb = input.Fb,
-			//	.wholeWorld = world,
-			//	.world = world,
-			//	.screen = clipped,
-			//	.model = input.Model,
-			//	.texture = input.Tex,
-			//	.lights = input.Lights,
-			//	.CameraPos = input.CameraPos
-			//};
+			screen.SortByY();
+
 			for (int i = 0; i < screen.v.size(); i++)
 			{
 				bar = Barycentric(
@@ -46,7 +54,7 @@ namespace Lilia
 					wholeScreen.v[0].vertex,
 					wholeScreen.v[1].vertex,
 					wholeScreen.v[2].vertex
-					);
+				);
 
 				world[i].vertex = ApplyBaricentric(
 					wholeWorld[0].vertex,
@@ -70,19 +78,15 @@ namespace Lilia
 				);
 			}
 
-			// sort by y axis
-			SortByY(screen, world);
+			//// sort by y axis
+			//SortByY(screen, world);
 
 			// Its simply Flat bottom triangle
 			if (screen[0].vertex.y == screen[1].vertex.y)
-				//DrawFlatBottom(drawingInput);
 				DrawFlatBottom(input, screen, world);
-				//screen.DrawFlatBottom(input.Fb);
 			// its simply flat top triangle
 			else if (screen[1].vertex.y == screen[2].vertex.y)
-				//DrawFlatTop(drawingInput);
 				DrawFlatTop(input, screen, world);
-				//screen.DrawFlatTop(input.Fb);
 			// more complex case => divide into flat top + flat bottom triangles
 			else
 			{
@@ -103,19 +107,6 @@ namespace Lilia
 
 				SortByY(flatTop, flatTopT);
 				SortByY(flatBot, flatBotT);
-
-				//drawingInput.screen = flatTop;
-				//drawingInput.world = flatTopT;
-				//DrawFlatTop(drawingInput);
-
-				//drawingInput.screen = flatBot;
-				//drawingInput.world = flatBotT;
-				//DrawFlatBottom(drawingInput);
-
-				//flatTop.SortByY();
-				//flatBot.SortByY();
-				//flatTop.DrawFlatTop(input.Fb);
-				//flatBot.DrawFlatBottom(input.Fb);
 				DrawFlatTop(input, flatTop, flatTopT);
 				DrawFlatBottom(input, flatBot, flatBotT);
 			}
