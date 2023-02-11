@@ -74,5 +74,7 @@ private:
 	void ResizeBuffers();
 
 	void UpdateCamera(float ts);
+
+	void UpdateShader();
 };
 

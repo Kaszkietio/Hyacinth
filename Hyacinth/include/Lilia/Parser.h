@@ -83,6 +83,50 @@ namespace Lilia::Parser
 
 				while (stream >> tmp)
 				{
+					if (i == 3)
+					{
+						Triangle triangle2{};
+						triangle2[0] = triangle[2];
+						triangle2[1] = triangle[0];
+
+						start = 0;
+						// vertex index
+						end = tmp.find('/', start);
+						if (end == std::string::npos)
+						{
+							index = std::stoi(tmp) - 1;
+							triangle2[2].vertex = vertice[index];
+						}
+						else
+						{
+							index = std::stoi(tmp.substr(start, end - start + 1)) - 1;
+							triangle2[2].vertex = vertice[index];
+
+							// texture coord index
+							start = end + 1;
+							end = tmp.find('/', start);
+							if (end == start)
+								triangle2[2].texCoord = glm::vec2(INFINITY);
+							else if (end != std::string::npos)
+							{
+								index = std::stoi(tmp.substr(start, end - start + 1)) - 1;
+								triangle2[2].texCoord = texCoords[index];
+							}
+
+							// normal index
+							start = end + 1;
+							end = tmp.length();
+							if (end != std::string::npos)
+							{
+								index = std::stoi(tmp.substr(start, end - start + 1)) - 1;
+								triangle2[2].normal = normals[index];
+							}
+						}
+
+						triangles.push_back(triangle2);
+						break;
+					}
+
 					start = 0;
 					// vertex index
 					end = tmp.find('/', start);

@@ -22,6 +22,16 @@ namespace Lilia
 			result.w = glm::lerp(a.w, b.w, q);
 			return result;
 		}
+
+		static inline ScreenVertex fastLerpNoY(const ScreenVertex& a, const ScreenVertex& b, float q)
+		{
+			ScreenVertex result;
+			float inq = 1 - q;
+			result.vertex.x = a.vertex.x * inq + b.vertex.x * q;
+			result.vertex.z = a.vertex.z * inq + b.vertex.z * q;
+			result.w = a.w * inq + b.w * q;
+			return result;
+		}
 	};
 
 	struct ScreenTriangle

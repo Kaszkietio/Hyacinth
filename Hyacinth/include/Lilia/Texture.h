@@ -12,21 +12,29 @@ namespace Lilia
 		int32_t height{};
 		int32_t channelCount{};
 		uint8_t* data{ nullptr };
+		int32_t h{}, w{};
 
-		constexpr uint32_t GetPixel(float u, float v)
+		inline uint32_t GetPixel(float u, float v)
 		{
-			return 0xff000000 
-				| data[(int32_t)((height - 1) * (1 - v)) * width * channelCount + int32_t(width * u) * channelCount + 2] << 16
-				| data[(int32_t)((height - 1) * (1 - v)) * width * channelCount + int32_t(width * u) * channelCount + 1] << 8
-				| data[(int32_t)((height - 1) * (1 - v)) * width * channelCount + int32_t(width * u) * channelCount];
+			//h = (int32_t)((height - 1) * (1 - v)) * width * channelCount;
+			//w = int32_t(width * u) * channelCount;
+			//return 0xff000000 
+			//	| data[h + w + 2] << 16
+			//	| data[h + w + 1] << 8
+			//	| data[h + w];
+			h = (int32_t)((height - 1) * (1 - v)) * width;
+			w = int32_t(width * u);
+			return ((uint32_t*)data)[h + w];
 		}
 
-		constexpr glm::vec3 GetPixelVector(float u, float v)
+		inline glm::vec3 GetPixelVector(float u, float v)
 		{
-			return glm::vec3(
-				(float)data[(int32_t)((height - 1) * (1 - v)) * width * channelCount + int32_t(width * u) * channelCount] / 255.0f,
-				(float)data[(int32_t)((height - 1) * (1 - v)) * width * channelCount + int32_t(width * u) * channelCount + 1] / 255.0f,
-				(float)data[(int32_t)((height - 1) * (1 - v)) * width * channelCount + int32_t(width * u) * channelCount + 2] / 255.0f
+			h = (int32_t)((height - 1) * (1 - v)) * width * channelCount;
+			w = int32_t(width * u) * channelCount;
+		return glm::vec3(
+				(float)data[h + w] / 255.0f,
+				(float)data[h + w + 1] / 255.0f,
+				(float)data[h + w + 2] / 255.0f
 				);
 		}
 		static constexpr uint32_t ToRGBA(const glm::vec3& c)

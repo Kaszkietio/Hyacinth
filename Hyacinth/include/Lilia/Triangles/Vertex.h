@@ -14,7 +14,7 @@ namespace Lilia
 		{
 			Vertex result;
 			result.vertex = glm::lerp(a.vertex, b.vertex, glm::vec4(q));
-			result.normal = glm::lerp(a.normal, b.normal, glm::vec4(q));
+			result.normal = glm::normalize(glm::lerp(a.normal, b.normal, glm::vec4(q)));
 			result.texCoord = glm::lerp(a.texCoord, b.texCoord, glm::vec2(q));
 			return result;
 		}

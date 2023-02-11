@@ -159,6 +159,7 @@
     <ClInclude Include="include\Lilia\Shaders\VertexShader.h" />
     <ClInclude Include="include\Lilia\Shading\ShadingModel.h" />
     <ClInclude Include="include\Lilia\Texture.h" />
+    <ClInclude Include="include\Lilia\Triangles\DrawingVertex.h" />
     <ClInclude Include="include\Lilia\Triangles\ScreenTriangle.h" />
     <ClInclude Include="include\Lilia\Triangles\Triangle.h" />
     <ClInclude Include="include\Lilia\Triangles\Vertex.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="src\Lilia\Entity.cpp" />
     <ClCompile Include="src\Hyacinth\rendering.cpp" />
     <ClCompile Include="src\Hyacinth\Scene.cpp" />
+    <ClCompile Include="src\Lilia\FragmentShader.cpp" />
     <ClCompile Include="src\Lilia\Renderer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

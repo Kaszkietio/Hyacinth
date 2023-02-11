@@ -24,14 +24,18 @@ namespace Lilia
 		Framebuffer fb{ .zBuffer = zBuffer };
 		std::vector<Light> Lights{};
 
+		// Shaders
+		FragmentShader fragmentShader{};
+
 		// Clippers
 		SutherlandHodgmanClipper SHClipper{};
 		Clipper& clipper = SHClipper;
 
 		// Shading models
 		ConstantShadingModel constModel{};
+		GouraudShadingModel gouraudModel{};
 		PhongShadingModel phongModel{};
-		ShadingModel& shadingModel = phongModel;
+		ShadingModel* shadingModel = &constModel;
 
 	public:
 		Renderer();
@@ -61,6 +65,16 @@ namespace Lilia
 		inline void MoveCamera(float forward, float up, float right, float yaw)
 		{
 			Camera.OnUpdate(forward, up, right, yaw);
+		}
+
+		inline void UpdateShader(int32_t isConstant, int32_t isGouraud, int32_t isPhong)
+		{
+			if (isConstant)
+				shadingModel = &constModel;
+			if (isGouraud)
+				shadingModel = &gouraudModel;
+			if (isPhong)
+				shadingModel = &phongModel;
 		}
 
 		static inline void Clear(const Framebuffer& fb, const glm::vec3& color)

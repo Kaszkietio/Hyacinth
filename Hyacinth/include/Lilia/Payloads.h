@@ -59,7 +59,7 @@ namespace FragmentData
 		Framebuffer& Fb;
 		const Triangle& World;
 		const ScreenTriangle& WholeScreenTriangle;
-		const std::vector<ScreenTriangle>& ScreenTriangles;
+		std::vector<ScreenTriangle>& ScreenTriangles;
 		Texture& Tex;
 		ShadingModel& Model;
 		const std::vector<Light>& Lights;
@@ -69,7 +69,7 @@ namespace FragmentData
 			Framebuffer& fb,
 			const Triangle& world,
 			const ScreenTriangle& wholeScreenTriangle,
-			const std::vector<ScreenTriangle>& screenTriangles,
+			std::vector<ScreenTriangle>& screenTriangles,
 			Texture& texture,
 			ShadingModel& model,
 			const std::vector<Light>& lights,

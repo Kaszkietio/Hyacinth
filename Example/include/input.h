@@ -5,7 +5,7 @@
 
 namespace Input
 {
-	constexpr int32_t KEYS_COUNT = 8;
+	constexpr int32_t KEYS_COUNT = 11;
 
 	enum class Keys : int32_t
 	{
@@ -17,6 +17,7 @@ namespace Input
 		Q,
 		Z,
 		C,
+		ONE, TWO, THREE
 	};
 
 	enum class KeyState : int32_t

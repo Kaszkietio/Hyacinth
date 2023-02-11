@@ -60,10 +60,10 @@ int Application::Run()
 
         nextTime = glfwGetTime();
 #if 1
-        //Log(std::to_string((nextTime - curTime) * 100).c_str());
         std::cout << 1 / (nextTime - curTime) << " FPS\n";
 #endif
         UpdateCamera(nextTime - curTime);
+        UpdateShader();
         curTime = nextTime;
         
         // Update frame
@@ -162,52 +162,10 @@ void Application::FillSceneData()
 
 void Application::CalculateFrame()
 {
-    //m_renderer.OnUpdate(m_data.get(), m_window.Width, m_window.Height);
 	uint8_t* imageData = m_data.get();
     int32_t& width = m_window.Width;
     int32_t& height = m_window.Height;
-    //std::random_device dev;
-    //std::mt19937 rng(dev());
-    //std::uniform_int_distribution<std::mt19937::result_type> dist(0, INT_MAX);
-
-    //glm::linearRand(glm::vec<3, float>(0.0f), glm::vec<3, float>(1.0f));
     m_renderer.OnUpdate((uint32_t*)imageData, width, height);
-    //uint32_t* imageData = m_renderer.GetFramebuffer();
-    //int32_t width = m_renderer.GetWidth(), height = m_renderer.GetHeight();
-
-    // Test
-    //LumenOpus::render((uint32_t*)imageData, width, height);
-
-    //m_renderer.MoveCamera(0.001f, 0.0f, 0.0f);
-
-    //m_renderer.OnUpdate((uint32_t*)imageData, width, height);
-    //Render((uint32_t*)imageData, width, height);
-
-	// Update
-   // for (size_t y = 0; y < m_window.Height; y++)
-   // {
-   //     for (size_t x = 0; x < m_window.Width; x++)
-   //     {
-   //         uint32_t* curPixel = (uint32_t*)&(imageData[(y * m_window.Width + x) * 4]);
-
-			//auto tmp = glm::linearRand(glm::vec<3, float>(0.0f), glm::vec<3, float>(1.0f));
-   //         *curPixel = 0xff000000
-   //             | (int)(tmp.x * 255.0f) << 16
-   //             | (int)(tmp.y * 255.0f) << 8
-   //             | (int)(tmp.z * 255.0f);
-            //*curPixel = dist(rng);
-            //*curPixel |= 0xff000000;
-
-            //if (x | y)
-            //	continue;
-
-            //Log(std::to_string(*curPixel).c_str());
-            //Log(std::to_string(imageData[(y * m_window.Width + x) * 4]).c_str());
-            //Log(std::to_string(imageData[(y * m_window.Width + x) * 4 + 1]).c_str());
-            //Log(std::to_string(imageData[(y * m_window.Width + x) * 4 + 2]).c_str());
-            //Log(std::to_string(imageData[(y * m_window.Width + x) * 4 + 3]).c_str());
-    //    }
-    //}
 }
 
 void Application::ResizeBuffers()
@@ -257,6 +215,15 @@ void Input::key_callback(GLFWwindow* window, int key, int scancode, int action, 
 		break;
     case GLFW_KEY_C:
 		Application::Keys[(int32_t)Keys::C] = (Input::KeyState)action;
+		break;
+    case GLFW_KEY_1:
+		Application::Keys[(int32_t)Keys::ONE] = (Input::KeyState)action;
+		break;
+    case GLFW_KEY_2:
+		Application::Keys[(int32_t)Keys::TWO] = (Input::KeyState)action;
+		break;
+    case GLFW_KEY_3:
+		Application::Keys[(int32_t)Keys::THREE] = (Input::KeyState)action;
 		break;
 	default:
 		break;
@@ -309,5 +276,13 @@ void Application::UpdateCamera(float ts)
         rot -= ts;
 
     m_renderer.MoveCamera(dz, dy, dx, rot);
-    //m_renderer.MoveCamera(dx, dy, dz);
+}
+
+void Application::UpdateShader()
+{
+    m_renderer.UpdateShader(
+        (int32_t)Keys[(int32_t)Input::Keys::ONE],
+        (int32_t)Keys[(int32_t)Input::Keys::TWO],
+        (int32_t)Keys[(int32_t)Input::Keys::THREE]
+    );
 }
